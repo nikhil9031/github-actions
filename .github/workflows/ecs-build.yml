@@ -30,7 +30,7 @@ jobs:
       with:
         role-to-assume: ${{ secrets.ROLE_ARN }}
         aws-region: ap-south-1
-        audience: jobs.build-deploy-dev.env.AUD
+        audience: env.AUD
 
     - name: Login to Amazon ECR
       id: login-ecr
