@@ -1,6 +1,6 @@
 name: ecs-build
 
-on: pull_request
+on: psuh
                                               
 jobs:
   build-deploy-dev:
