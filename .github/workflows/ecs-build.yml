@@ -10,6 +10,11 @@ jobs:
     environment:
       name: Dev
       url: https://dev.app   
+
+    env:               
+        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # Repo name
+        ROLE_ARN: ${{ secrets.ROLE_ARN }}
+        AUD: ${{ secrets.AUDIENCE }}
       
     permissions:
       id-token: write
@@ -20,15 +25,12 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure AWS credentials
-      env:               
-        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # Repo name
-        ROLE_ARN: ${{ secrets.ROLE_ARN }}
-        AUD: ${{ secrets.AUDIENCE }}
+      
       uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: ${{ secrets.ROLE_ARN }}
         aws-region: ap-south-1
-        audience: "$AUD"
+        audience: jobs.build-deploy-dev.env.AUD
 
     - name: Login to Amazon ECR
       id: login-ecr
