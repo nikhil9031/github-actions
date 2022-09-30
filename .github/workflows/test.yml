@@ -1,0 +1,23 @@
+name: ecs-build
+
+on: pull_request
+                                              
+jobs:
+  build-deploy-dev:
+    name: building & pushing to Dev
+    runs-on: ubuntu-latest    
+
+    environment:
+      name: Dev
+      url: https://dev.app   
+
+  
+
+    steps:
+
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      run: echo ${{ secrets.VARIABLE1}}
+
+  
