@@ -10,8 +10,6 @@ jobs:
     environment:
       name: Dev
       url: https://dev.app   
-
-    env:
       
     permissions:
       id-token: write
