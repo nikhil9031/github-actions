@@ -9,15 +9,10 @@ jobs:
 
     environment:
       name: Dev
-      url: https://dev.app   
-
-  
 
     steps:
-
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      run: echo ${{ secrets.VARIABLE1}}
+    - name: Test
+      id: Test
+      run: echo ${{ secrets.VARIBALE1}}
 
   
