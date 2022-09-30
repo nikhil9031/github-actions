@@ -12,9 +12,9 @@ jobs:
       url: https://dev.app   
 
     env:               
-        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # Repo name
-        ROLE_ARN: ${{ secrets.ROLE_ARN }}
-        AUD: ${{ secrets.AUDIENCE }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # Repo name
+      ROLE_ARN: ${{ secrets.ROLE_ARN }}
+      AUD: ${{ secrets.AUDIENCE }}
       
     permissions:
       id-token: write
