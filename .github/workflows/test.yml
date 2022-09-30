@@ -12,7 +12,7 @@ jobs:
       url: https://dev.app
 
     env:
-      VARIBALE1: ${{ secrets.VARIBALE1}}
+      VARIBALE1: Temp
 
     steps:
     - name: Test
