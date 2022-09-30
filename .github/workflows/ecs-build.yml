@@ -14,7 +14,9 @@ jobs:
     - name: Build and tag docker image
       id: build-image
       
-      run: docker build -t temp:v1 .
+      run: |
+        docker build -t temp:v1 .
+        docker images
 
   push-dev:
     name: Pushing Image to dev
@@ -52,6 +54,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
+        docker images
         docker tag temp:v1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
