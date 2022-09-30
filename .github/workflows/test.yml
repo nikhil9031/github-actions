@@ -11,9 +11,13 @@ jobs:
       name: Dev
       url: https://dev.app
 
+    env:
+      VARIBALE1: ${{ secrets.VARIBALE1}}
+
     steps:
     - name: Test
       id: Test
-      run: echo ${{ secrets.VARIBALE1}}
+      
+      run: echo $VARIBALE1
 
   
