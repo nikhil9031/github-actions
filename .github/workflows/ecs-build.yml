@@ -24,11 +24,11 @@ jobs:
       env:               
         ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # Repo name
         ROLE_ARN: ${{ secrets.ROLE_ARN }}
-        AUDIENCE: ${{ secrets.AUDIENCE }}
+        AUD: ${{ secrets.AUDIENCE }}
       with:
         role-to-assume: ${{ secrets.ROLE_ARN }}
         aws-region: ap-south-1
-        audience: $AUDIENCE
+        audience: $AUD
 
     - name: Login to Amazon ECR
       id: login-ecr
