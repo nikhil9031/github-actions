@@ -9,6 +9,7 @@ jobs:
 
     environment:
       name: Dev
+      url: https://dev.app
 
     steps:
     - name: Test
