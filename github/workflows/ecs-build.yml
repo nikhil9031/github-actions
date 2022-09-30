@@ -1,0 +1,91 @@
+name: ecs-build
+
+on: push
+env:               
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # Repo name
+  ROLE_ARN: ${{ secrets.ROLE_ARN }}
+  AUDIENCE: ${{ secrets.AUDIENCE }}
+                                              
+jobs:
+  build:
+    name: building
+    runs-on: ubuntu-latest    
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build and tag docker image
+      id: build-image
+      
+      run: docker build -t temp:v1 .
+
+  push-dev:
+    name: pushing Image to dev
+    runs-on: ubuntu-latest   
+    environment:
+      name: dev
+      url: https://dev.app   
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: $ROLE_ARN
+        aws-region: ap-south-1
+        audience: $AUDIENCE
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: push image to Amazon ECR
+      id: build-image
+      needs: [build]
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: docker tag temp:v1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  push-prod:
+    name: Pushing Image to Prod
+    runs-on: ubuntu-latest   
+    environment:
+      name: Prod
+      url: https://prod.app   
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: $ROLE_ARN
+        aws-region: ap-south-1
+        audience: $AUDIENCE
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |   
+        docker tag temp:v1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
